@@ -1,0 +1,41 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Generator</title>
+</head>
+<body>
+    <h1>AI Code Generator</h1>
+    <form id="codeForm">
+        <label for="prompt">Enter a coding task or prompt:</label>
+        <input type="text" id="prompt" required>
+        <button type="submit">Generate Code</button>
+    </form>
+
+    <h2>Generated Code:</h2>
+    <pre id="generatedCode"></pre>
+
+    <script>
+        document.getElementById('codeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const prompt = document.getElementById('prompt').value;
+
+            fetch('<your-colab-ngrok-url>/generate_code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: prompt }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const generatedCode = document.getElementById('generatedCode');
+                generatedCode.textContent = data.code || 'Error generating code';
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
